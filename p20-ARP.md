@@ -6,7 +6,7 @@
 - 192.168.0.1 but has two cards. This will not work
 - somehow the link and ip addr are couple (historical reasons)
 
-![gateway] (images/gateway.png)
+![gateway](https://raw.githubusercontent.com/tharittk/cs144-computer-networking/main/images/gateway.png)
 
 - we can see that there are two packets (A->gateway, gateway->B)
 - the souce and destination ip addr = the same
