@@ -1,0 +1,33 @@
+# TCP Service Model
+
+- Transport layer: two nodes establist the connection at TCP layer to one another (view)
+- A -> B (syn)
+- A <- B (syn + ack)
+- A -> B (ack)
+- TCP "stream of bytes" service
+- TCP of A and B work together to ensure reliable stream of bytes transfer
+- A puts bytes to TCP segment, send to B.
+- Once done, connection tear down A -> B (fin)
+- But B may still want to send some to A (Data + Ack)
+- B -> A (fin) and A sends an ACK
+- 4 mechanism TCP uses for reliable delivery:
+- Ack = let sender know that data sent correctly
+- checksum = detect corruption that may happen along the way
+- seq number = detect missing data (sender needs to resend)
+- flow control = if host A is much faster than B, receiver B tells A how much buffer it has to receive more data
+- Data may be received out-of-order. TCP reorders it.
+- Congestion control - very complicated. TBC.
+- TCP header is quite complicated because it has more work to do than IP.
+- Some headers good to know
+- Destination Port (for HTTP, SMTP), IANA - well known port number for the application
+- Source Port (host B uses this to send the data back: port = for this application)
+- Seq no.
+- Acknowledgement Seq # (we receive up to this # seq) ~ piggyback
+- checksum
+- header length field
+- flag: ack, syn, fin, psh (deliver data immediately upon arrival - don't have to wait)
+- TCP optional (after the TCP Standard was established)
+- (IP Src, IP Dest), Protocol="TCP", (TCP Src Port, TCP Dest Port) <- application
+- when A -> B syn, it sends Initial Sequence Number (ISN_A)
+- B -> A (ack, syn) B also sends (ISN_B)
+- When sending data, B also sends back to A what byte offset it expects next

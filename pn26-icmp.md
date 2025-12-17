@@ -1,0 +1,22 @@
+# Internet Control Message Protocol
+
+- To make the internet works: IP (hop-by-hop), Routing Table, Internet Control Message Protocol (ICMP)
+- ICMP is usually for error reporting
+- sits above network layer (technically transport protocol), give the error info to transport protocol
+- App - transport - network - link - link - network (router) - network (router) - link - link - network - transport - App
+- if the destination is not in some routing table, that router send the info back to the sender host "destination not reachable"
+- [----data---- | Hdr], ICMP takes Header of datagram + 8 bytes of data in the ICMP message
+- and construct [---data---- | header: ip src: router fail, ip dest: A]
+- destination network unreachable, destination host unreachable, destination port unreachable...)
+- `ping` uses ICMP
+- ICMP from A [---- | type 8 = echo request]
+- ICMP message goes into IP datagram [---- ICMP message ---- | dest = B]
+- ICMP from B [--- echo reply | dest = A], goes int IP datagram, to A
+- `traceroute` also uses ICMP. It tries to trace the routers along the path A -> B
+- A sends UDP message (does not matter what it contains actually)
+- encapsulated in IP datagram with TTL = 1
+- the router discards TTL = 0, discard the packet, and send back message ICMP type 11: TTL expired (with the same mechanism like `ping`)
+- Once A receive message from this router, it can then calculate the round-trip time
+- For 2nd router, A sends UDP with TTL = 2, TTL becomes 1 after first router, and 0 after second router.
+- This TTL = 0 triggers Router 2 to emit the ICMP message back to A
+- So it is like you (traceroute) leverages to exisiting ICMP infrastructure by carefully selecting the TTL such that scheme serves its intended purpose.
